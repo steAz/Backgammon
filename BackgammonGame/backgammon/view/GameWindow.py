@@ -13,6 +13,13 @@ class GameWindow(Frame):
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
+        self.master.title("Backgammon Game")
+        self.master.geometry("1400x900")
+        self.master.resizable(width=False, height=False)
+        'setting background image'
+        background_image = PhotoImage(file="background.gif")
+        background_label = Label(image=background_image)
+        background_label.place(x=0, y=0, relwidth=1, relheight=1)
         ''' applcation's main loop '''
         mainloop()
         
