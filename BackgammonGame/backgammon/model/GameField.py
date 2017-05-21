@@ -23,7 +23,7 @@ class GameField:
             self.__number_of_checkers = number_of_checkers
             self.__color = color
             self.__is_empty = is_empty
-        else:
+        else :
             self.__number_of_checkers = 0
             self.__is_empty = is_empty
             self.__color = color
