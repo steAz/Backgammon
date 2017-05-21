@@ -22,6 +22,8 @@ class GameWindow(Frame):
         background_label.place(x=0, y=0, relwidth=1, relheight=1)
         ''' applcation's main loop '''
         mainloop()
+    def displayBoardState(self):
+        pass
         
 
 root = Tk()
