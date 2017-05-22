@@ -22,8 +22,6 @@ class GameWindow(Frame):
         self.__red_checker_image = PhotoImage(file="checker_red.gif")
         self.__black_checker_image = PhotoImage(file="checker_black.gif")
         self.__background_label = Label(image=self.__background_image)
-        #self.displayField(game_field = GameField(is_empty=False, number_of_checkers=4, color=Color.BLACK), field_number=23)
-        #self.displayField(game_field = GameField(is_empty=False, number_of_checkers=1, color=Color.BLACK), field_number=1)
         starting_board = BoardState()
         self.board = starting_board
         self.displayBoardState(board_state=starting_board)
@@ -95,15 +93,11 @@ class GameWindow(Frame):
     
     def buttonPressed(self, fieldNum=0):
         if self.game.isRandomized == True and self.game.isDiceChosen == True:
-            #number = self.board._BoardState__fields_states[fieldNumber].number_of_checkers
-            #self.board._BoardState__fields_states[fieldNumber].number_of_checkers = number + 1
-            #self.displayBoardState(self.board)
             'changing boards state'
-            self.game.makeTurn(self.board, fieldNum)
+            self.game.makeTurn(self.board, fieldNum, Color.RED)
             self.game.isRandomized = False
             self.displayBoardState(self.board)
             
         
         
-        #display_label.grid()
         
