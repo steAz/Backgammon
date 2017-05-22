@@ -1,24 +1,25 @@
 '''
 Created on 21 maj 2017
 
-@author: Oskar
+@author: Oskar/Kazan
 '''
 
-from backgammon.model.GameField import GameField
-from backgammon.model.GameField import Color
+from model.GameField import GameField
+from model.GameField import Color
 
-class BoardState(object):
+class BoardState:
     '''
     class which represents state of board at the moment.
     '''
 
 
-    def __init__(self, fields_states = None):
-        __fields_states = []
-        if fields_states == None:
+    def __init__(self, fields = None):
+        self.__fields_states = None
+        self.__fields_states = []
+        if fields == None:
             self.__fields_states = BoardState.startingBoardState()
         else:
-            self.__fields_states = fields_states
+            self.__fields_states = fields
             
     
     @staticmethod
@@ -56,12 +57,14 @@ class BoardState(object):
         
         return default_fields
                               
-        @property
-        def fields_states(self):
-            return self.__fields_states
+        
         
         def update_field_at_index(self, index, game_field):
             fields_states.insert(index, game_field) 
+
+        @property
+        def fields_states(self):
+            return self.__fields_states
                               
                               
                               

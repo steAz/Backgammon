@@ -1,7 +1,7 @@
 '''
 Created on 18 maj 2017
 
-@author: Oskar
+@author: Oskar/Kazan
 '''
 from enum import Enum
 
