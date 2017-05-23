@@ -55,10 +55,28 @@ class GameWindow(Frame):
             button_black.place(x=675, y=450)
             self.__widgets.append(button_black)
 
+    def displayCourtState(self):
+           if self.game._Game__redsOnTheCourt > 0:
+                number_label_red = Label(text=str(self.game._Game__redsOnTheCourt))
+                self.__widgets.append(number_label_red)
+                number_label_red.place(x=1321, y=220)
+                button_red = Button(image=self.__red_checker_image)
+                button_red.place(x=1303, y=240)
+                self.__widgets.append(button_red)
+           if self.game._Game__blacksOnTheCourt > 0:
+                number_label_black = Label(text=str(self.game._Game__blacksOnTheCourt))
+                self.__widgets.append(number_label_black)
+                number_label_black.place(x=1321, y=630)
+                button_black = Button(image=self.__black_checker_image)
+                button_black.place(x=1303, y=650)
+                self.__widgets.append(button_black)
+
+
 
     def displayBoardState(self, board_state=None):
         self.clearLabels()
         self.displayBandState()
+        self.displayCourtState()
 
         self.__background_label.place(x=0, y=0, relwidth=1, relheight=1)
         if board_state != None:

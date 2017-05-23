@@ -19,6 +19,8 @@ class Game:
         self.__amountOfMoves = None
         self.__redsOnBand = 0
         self.__blacksOnBand = 0
+        self.__redsOnTheCourt = 4
+        self.__blacksOnTheCourt = 4
 
     @player.setter
     def player(self, player):
