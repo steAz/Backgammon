@@ -34,14 +34,14 @@ class BoardState:
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(False, 5, Color.BLACK))
+        default_fields.append(GameField(False, 1, Color.BLACK)) #5
         default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(False, 3, Color.BLACK))
+        default_fields.append(GameField(False, 1, Color.BLACK)) #3
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(False, 5, Color.RED))
-        default_fields.append(GameField(False, 5, Color.BLACK))
+        default_fields.append(GameField(False, 1, Color.BLACK)) #5
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
@@ -52,7 +52,7 @@ class BoardState:
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(False, 2, Color.BLACK))
+        default_fields.append(GameField(False, 1, Color.BLACK)) #2
         default_fields.reverse() 
         
         return default_fields
