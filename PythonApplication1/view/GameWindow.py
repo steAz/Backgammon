@@ -44,7 +44,7 @@ class GameWindow(Frame):
             number_label_red = Label(text=str(self.game._Game__redsOnBand))
             self.__widgets.append(number_label_red)
             number_label_red.place(x=693, y=320)
-            button_red = Button(image=self.__red_checker_image)
+            button_red = Button(image=self.__red_checker_image, command=lambda:self.bandCheckerPressed())
             button_red.place(x=675, y=340)
             self.__widgets.append(button_red)
         if self.game._Game__blacksOnBand > 0:
@@ -146,7 +146,7 @@ class GameWindow(Frame):
     def buttonPressed(self, fieldNum=0):
         print(str(self.game._Game__amountOfMoves))
         if self.board._BoardState__fields_states[fieldNum].color == Color.RED: # we can move only red
-            if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0:
+            if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0 and self.game._Game__redsOnBand == 0:
                 'changing boards state'
                 if self.game.makeTurn(self.board, fieldNum, Color.RED) == True:
                     if  self.game._Game__amountOfMoves == 2:
@@ -157,8 +157,25 @@ class GameWindow(Frame):
                     self.game._Game__amountOfMoves -= 1
                     if self.game._Game__amountOfMoves == 0:
                         self.game.isRandomized = False
+                else:
+                    print("niewlasciwy ruch")
                 
-        self.displayBoardState(self.board)      
+        self.displayBoardState(self.board)
+        
+    def bandCheckerPressed(self):
+         
+         if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0:
+             self.game.removeFromBand(Color.RED, self.board)
+             if  self.game._Game__amountOfMoves == 2:
+                 if self.game._Game__currNum == self.game._Game__currNumI:
+                    self.game.setDice(2)
+                 else:
+                    self.game.setDice(1)
+             self.game._Game__amountOfMoves -= 1
+             if self.game._Game__amountOfMoves == 0:
+                self.game.isRandomized = False
+
+             self.displayBoardState(self.board)
             
         
         
