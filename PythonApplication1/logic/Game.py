@@ -60,29 +60,8 @@ class Game:
                 return False
             return self.normalMove(board, fieldNum, currentColor)
         else:
-            if self.isHomeValid(fieldNum, currentColor, board) == False:
-                return False
             return self.homeMove(board, fieldNum, currentColor)
-        #if currentColor == Color.RED:
-        #    destNumber = fieldNum - self.__currNum
-        #    isRed = True
-        #else:
-        #    destNumber = fieldNum + self.__currNum
-        #    isBlack = False
-
-        #destField = board._BoardState__fields_states[destNumber]
-        #currField = board._BoardState__fields_states[fieldNum]
-        #if destField.is_empty == True:
-        #    self.moveToEmpty(destField, currField)
-        #    return True
-        #if destField.color == currField.color:
-        #    self.moveToOur(destField, currField)
-        #    return True
-        #elif destField.color != currentColor and destField.number_of_checkers == 1:
-        #    self.hitEnemy(destField, currField)
-        #    return True
        
-
 
     def isValidhomeMove(self, fieldNum, playerColor, board):
         if playerColor == Color.RED:
@@ -151,7 +130,7 @@ class Game:
         amountOfCheckersAtHome = 0
         if currentColor == Color.RED:
             for i in range(18):
-                if board._BoardState__fields_states[i + 5].color == currentColor and board._BoardState__fields_states[i + 5].is_empty == False:
+                if board._BoardState__fields_states[i + 6].color == currentColor and board._BoardState__fields_states[i + 6].is_empty == False:
                     return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
             if self.__redsOnBand > 0:
                 return False
