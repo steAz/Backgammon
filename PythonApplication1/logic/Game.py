@@ -27,7 +27,6 @@ class Game:
         self.__player = player
 
     def setRandNumbers(self, event=None):
-        
         if self.__isRandomized == False:
             self.__isDiceChosen = False
             numI = randint(1,6)
@@ -59,9 +58,7 @@ class Game:
             if self.isValidMove(fieldNum, currentColor, board) == False:
                 return False
             return self.normalMove(board, fieldNum, currentColor)
-        else:
-            if self.isHomeValid(fieldNum, currentColor, board) == False:
-                return False
+        else: 
             return self.homeMove(board, fieldNum, currentColor)
         #if currentColor == Color.RED:
         #    destNumber = fieldNum - self.__currNum
@@ -81,22 +78,75 @@ class Game:
         #elif destField.color != currentColor and destField.number_of_checkers == 1:
         #    self.hitEnemy(destField, currField)
         #    return True
-       
+    
+    def homeIndexes(self, color):
+        if color == Color.RED:
+            return range(6)
+        else:
+            return range(18,24)
+          
+    def isAnotherFieldsToTheCourt(self, fieldNum, playerColor, board):
+        for i in self.homeIndexes(playerColor):
+            if i != fieldNum:
+                if self.fieldsToTheCourt(playerColor, fieldNum) == self.__currNum:
+                    field = board._BoardState__fields_states[fieldNum]
+                    if field.is_empty == False and field.color == playerColor:
+                        return True
+        return False
 
+    def isAnotherFurther(fieldNum, playerColor, board):
+        for i in self.homeIndexes(playerColor):
+            if i != fieldNum:
+                if self.fieldsToTheCourt(playerColor, i) > self.fieldsToTheCourt(playerColor, fieldNum):
+                    if self.isFieldInTheSameColor(fieldNum, playerColor, board) == True:
+                        return True
+        return False
 
-    def isValidhomeMove(self, fieldNum, playerColor, board):
+    def isFieldInTheSameColor(self, fieldNum, playerColor, board):
+        field = board._BoardState__fields_states[fieldNum]
+        if field.is_empty == False and field.color == playerColor:
+            return True
+        else:
+            return False
+
+    def homeMove(self, fieldNum, playerColor, board):
         if playerColor == Color.RED:
             destNumber = fieldNum - self.__currNum
         else:
             destNumber = fieldNum + self.__currNum
         destField = board._BoardState__fields_states[destNumber]
 
-        if fieldNum + 1 == self.__currNum:   #jesli nasza pozycja jest na pozycji wybranej kostki, to wyjdz na dwor
-            self.moveToTheCourt(fieldNum, playerColor, board)
-            return True
-        #elif destField.is_empty == False and destNumber > :
-
-
+        if self.__amountOfMoves == 1:
+            if self.fieldsToTheCourt(playerColor, fieldNum) == self.__currNum:   #jesli nasza pozycja jest na pozycji wybranej kostki, to wyjdz na dwor
+                self.moveToTheCourt(fieldNum, playerColor, board)
+                return True
+            elif self.isAnotherFieldsToTheCourt(fieldNum, playerColor, board) == True:
+                return False
+            elif self.isAnotherFurther(fieldNum, playerColor, board) == True: # normal Move
+                return False
+            elif destNumber <= 23 and destNumber >= 0:
+                if destField.is_empty == True:
+                    self.moveToEmpty(destField, currField)
+                    return True
+                if destField.color == currField.color:
+                    self.moveToOur(destField, currField)
+                    return True
+                elif destField.color != currentColor and destField.number_of_checkers == 1:
+                    self.hitEnemy(destField, currField)
+                    return True
+                else:
+                    return False
+            else:
+                self.moveToTheCourt(fieldNum, playerColor, board)
+                return True
+        else:
+            pass
+    
+    def fieldsToTheCourt(self, currColor, fieldNum):
+        if currColor == Color.RED:
+            return fieldNum + 1
+        else:
+            return 24 - fieldNum 
 
     def moveToTheCourt(self, fieldNum, playerColor, board):
         if playerColor == Color.RED:
@@ -151,7 +201,7 @@ class Game:
         amountOfCheckersAtHome = 0
         if currentColor == Color.RED:
             for i in range(18):
-                if board._BoardState__fields_states[i + 5].color == currentColor and board._BoardState__fields_states[i + 5].is_empty == False:
+                if board._BoardState__fields_states[i + 6].color == currentColor and board._BoardState__fields_states[i + 6].is_empty == False:
                     return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
             if self.__redsOnBand > 0:
                 return False
