@@ -6,12 +6,16 @@ class AIboardState(BoardState):
     def __init__(self, move, numOfMoves):
         self.__AImove = move
         self.__heuristic = 0
-        self.__secDice = 0
+        self.__diceI = 0
+        self.__diceII = 0
         self.__numberOfMoves = numOfMoves
 
+
     def AIbStateAfterMove(self):
-        move.makeAImove(self)
-        return self
+        #move.makeAImove(self)
+        self. __heuristic = self.calculateHeuristic()
+        self.__numberOfMoves -= 1
+
 
     def calculateHeuristic(self):
         resultBlack = 0
@@ -32,7 +36,8 @@ class AIboardState(BoardState):
                 else:
                     resultRed += (8 - index)
             index += 1
-        self.__heuristic = resultBlack - resultRed
+
+        return (resultBlack - resultRed)
 
 
 
