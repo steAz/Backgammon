@@ -23,6 +23,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="logic\Game.py" />
+    <Compile Include="logic\GraphOfStates.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="logic\ListOfStates.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="logic\Participant.py" />
     <Compile Include="logic\Player.py" />
     <Compile Include="model\BoardState.py" />
