@@ -3,6 +3,7 @@ from model.GameField import GameField
 from logic.Game import *
 from model.GameField import Color
 from model.BoardState import BoardState
+from logic.AIbot import AIbot
 import sys
 #import Tkinter
 
@@ -15,6 +16,7 @@ class GameWindow(Frame):
         Frame.__init__(self, master)
         self.__widgets = []
         starting_board = BoardState()
+        self.AIbot = AIbot()
         self.board = starting_board
         self.game = Game()
         self.game.__amountOfMoves = 0
@@ -157,6 +159,7 @@ class GameWindow(Frame):
                             self.game.setDice(1)
                     self.game._Game__amountOfMoves -= 1
                     if self.game._Game__amountOfMoves == 0:
+                        self.AIbot.makeTurnForBot(self.board)
                         self.game.isRandomized = False
                 else:
                     print("niewlasciwy ruch")

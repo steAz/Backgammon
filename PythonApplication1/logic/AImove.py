@@ -1,4 +1,4 @@
-from Game import Game
+from logic.Game import Game
 
 class AImove(Game):
     def __init__(self, diceNum, fieldNum, color):

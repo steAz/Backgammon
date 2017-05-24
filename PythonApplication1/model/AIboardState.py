@@ -1,5 +1,5 @@
 from logic.AImove import AImove
-from BoardState import BoardState
+from model.BoardState import BoardState
 
 class AIboardState(BoardState):
     
