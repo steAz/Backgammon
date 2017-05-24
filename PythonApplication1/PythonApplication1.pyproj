@@ -22,11 +22,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Include="logic\BotAI.py">
-=======
+    <Compile Include="logic\AIbot.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="logic\AImove.py">
->>>>>>> creating_Move_using_Game
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="logic\Game.py" />
@@ -35,16 +34,12 @@
     <Compile Include="logic\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="model\AIBoardState.py">
+    <Compile Include="model\AIboardState.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="model\BoardState.py" />
     <Compile Include="model\GameField.py" />
-<<<<<<< HEAD
-    <Compile Include="model\Move.py">
-=======
     <Compile Include="model\__init__.py">
->>>>>>> creating_Move_using_Game
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="projTryktrak.py" />

@@ -16,7 +16,7 @@ class GameWindow(Frame):
         self.__widgets = []
         starting_board = BoardState()
         self.board = starting_board
-        self.game = Game(self.board)
+        self.game = Game()
         self.game.__amountOfMoves = 0
         self.master.title("Backgammon Game")
         self.master.geometry("1400x900")
@@ -149,7 +149,7 @@ class GameWindow(Frame):
         if self.board._BoardState__fields_states[fieldNum].color == Color.RED: # we can move only red
             if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0 and self.board._BoardState__redsOnBand == 0:
                 'changing boards state'
-                if self.game.makeTurn(fieldNum, Color.RED) == True:
+                if self.game.makeTurn(self.board,fieldNum, Color.RED) == True:
                     if  self.game._Game__amountOfMoves == 2:
                         if self.game._Game__currNum == self.game._Game__currNumI:
                             self.game.setDice(2)
