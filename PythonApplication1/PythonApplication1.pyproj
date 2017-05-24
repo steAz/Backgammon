@@ -29,12 +29,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="logic\Game.py" />
-    <Compile Include="logic\GraphOfStates.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="logic\ListOfStates.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="logic\Participant.py" />
     <Compile Include="logic\Player.py" />
     <Compile Include="logic\__init__.py">
