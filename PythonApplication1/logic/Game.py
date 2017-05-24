@@ -70,7 +70,7 @@ class Game:
             return range(18,24)
           
 
-    def isAnotherFieldsToTheCourt(self, fieldNum, playerColor, isLastMove=True):
+    def isAnotherFieldsToTheCourt(self, fieldNum, playerColor, board, isLastMove=True):
         if isLastMove == True:
             secondDice = self.__currNum
         elif self.__currNum == self.__currNumI:
@@ -195,9 +195,9 @@ class Game:
         else:
             destNumber = fieldNum + self.__currNum
             isBlack = False
-
         destField = self.__board._BoardState__fields_states[destNumber]
         currField = self.__board._BoardState__fields_states[fieldNum]
+
         return self.moveCheckerStandard(destField, currField, currentColor) # make normal move
 
 
