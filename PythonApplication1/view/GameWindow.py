@@ -40,15 +40,15 @@ class GameWindow(Frame):
         sys.exit() # if you want to exit the entire thing
 
     def displayBandState(self):
-        if self.game._Game__redsOnBand > 0:
-            number_label_red = Label(text=str(self.game._Game__redsOnBand))
+        if self.board._BoardState__redsOnBand > 0:
+            number_label_red = Label(text=str(self.board._BoardState__redsOnBand))
             self.__widgets.append(number_label_red)
             number_label_red.place(x=693, y=320)
             button_red = Button(image=self.__red_checker_image, command=lambda:self.bandCheckerPressed())
             button_red.place(x=675, y=340)
             self.__widgets.append(button_red)
-        if self.game._Game__blacksOnBand > 0:
-            number_label_black = Label(text=str(self.game._Game__blacksOnBand))
+        if self.board._BoardState__blacksOnBand > 0:
+            number_label_black = Label(text=str(self.board._BoardState__blacksOnBand))
             self.__widgets.append(number_label_black)
             number_label_black.place(x=693, y=430)
             button_black = Button(image=self.__black_checker_image)
@@ -56,15 +56,15 @@ class GameWindow(Frame):
             self.__widgets.append(button_black)
 
     def displayCourtState(self):
-           if self.game._Game__redsOnTheCourt > 0:
-                number_label_red = Label(text=str(self.game._Game__redsOnTheCourt))
+           if self.board._BoardState__redsOnTheCourt > 0:
+                number_label_red = Label(text=str(self.board._BoardState__redsOnTheCourt))
                 self.__widgets.append(number_label_red)
                 number_label_red.place(x=1321, y=220)
                 button_red = Button(image=self.__red_checker_image)
                 button_red.place(x=1303, y=240)
                 self.__widgets.append(button_red)
-           if self.game._Game__blacksOnTheCourt > 0:
-                number_label_black = Label(text=str(self.game._Game__blacksOnTheCourt))
+           if self.board._BoardState__blacksOnTheCourt > 0:
+                number_label_black = Label(text=str(self.board._BoardState__blacksOnTheCourt))
                 self.__widgets.append(number_label_black)
                 number_label_black.place(x=1321, y=630)
                 button_black = Button(image=self.__black_checker_image)
@@ -146,7 +146,7 @@ class GameWindow(Frame):
     def buttonPressed(self, fieldNum=0):
         print(str(self.game._Game__amountOfMoves))
         if self.board._BoardState__fields_states[fieldNum].color == Color.RED: # we can move only red
-            if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0 and self.game._Game__redsOnBand == 0:
+            if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0 and self.board._BoardState__redsOnBand == 0:
                 'changing boards state'
                 if self.game.makeTurn(self.board, fieldNum, Color.RED) == True:
                     if  self.game._Game__amountOfMoves == 2:

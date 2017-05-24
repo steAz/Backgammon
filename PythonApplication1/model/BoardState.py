@@ -16,6 +16,10 @@ class BoardState:
     def __init__(self, fields = None):
         self.__fields_states = None
         self.__fields_states = []
+        self.__redsOnBand = 0
+        self.__blacksOnBand = 0
+        self.__blacksOnTheCourt = 0
+        self.__redsOnTheCourt = 0
         if fields == None:
             self.__fields_states = BoardState.startingBoardState()
         else:

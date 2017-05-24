@@ -17,10 +17,6 @@ class Game:
         self.__currNumII = None
         self.__currNum = None
         self.__amountOfMoves = None
-        self.__redsOnBand = 5
-        self.__blacksOnBand = 5
-        self.__blacksOnTheCourt = 0
-        self.__redsOnTheCourt = 0
 
     @player.setter
     def player(self, player):
@@ -125,7 +121,7 @@ class Game:
                 return False
             elif destNumber <= 23 and destNumber >= 0:
                 field = board._BoardState__fields_states[fieldNum]
-                return self.moveCheckerStandard(destField, field, playerColor) # make normal move
+                return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
             else:
                 self.moveToTheCourt(fieldNum, playerColor, board)
                 return True
@@ -137,7 +133,7 @@ class Game:
                     return True
                 elif destNumber <= 23 and destNumber >= 0:
                     field = board._BoardState__fields_states[fieldNum]
-                    return self.moveCheckerStandard(destField, field, playerColor) # make normal move
+                    return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
                 else:
                     self.moveToTheCourt(fieldNum, playerColor, board)
                     return True
@@ -150,7 +146,7 @@ class Game:
                     return False
                 elif destNumber <= 23 and destNumber >= 0:
                     field = board._BoardState__fields_states[fieldNum]
-                    return self.moveCheckerStandard(destField, field, playerColor) # make normal move
+                    return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
                 else:
                     self.moveToTheCourt(fieldNum, playerColor, board)
                     return True
@@ -165,9 +161,9 @@ class Game:
     def moveToTheCourt(self, fieldNum, playerColor, board):
         print("movetoTheCOurt called")
         if playerColor == Color.RED:
-            self.__redsOnTheCourt += 1
+            board._BoardState__redsOnTheCourt += 1
         else:
-            self.__blacksOnTheCourt += 1
+            board._BoardState__blacksOnTheCourt += 1
 
         field =  board._BoardState__fields_states[fieldNum]
         field.number_of_checkers -= 1
@@ -201,10 +197,10 @@ class Game:
 
         destField = board._BoardState__fields_states[destNumber]
         currField = board._BoardState__fields_states[fieldNum]
-        return self.moveCheckerStandard(destField, currField, currentColor) # make normal move
+        return self.moveCheckerStandard(destField, currField, currentColor, board) # make normal move
 
 
-    def moveCheckerStandard(self, destField, currField, currColor):   
+    def moveCheckerStandard(self, destField, currField, currColor, board):   
         if destField.is_empty == True:
             self.moveToEmpty(destField, currField)
             return True
@@ -212,7 +208,7 @@ class Game:
             self.moveToOur(destField, currField)
             return True
         elif destField.color != currColor and destField.number_of_checkers == 1:
-            self.hitEnemy(destField, currField)
+            self.hitEnemy(destField, currField, board)
             return True
         else:
             print("move checker standard")
@@ -225,7 +221,7 @@ class Game:
             for i in range(18):
                 if board._BoardState__fields_states[i + 6].color == currentColor and board._BoardState__fields_states[i + 6].is_empty == False:
                     return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
-            if self.__redsOnBand > 0:
+            if board._BoardState__redsOnBand > 0:
                 return False
             else:
                 return True
@@ -233,7 +229,7 @@ class Game:
             for i in range(18):
                 if board._BoardState__fields_states[i].color == currentColor and board._BoardState__fields_states[i].is_empty == False:
                     return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
-            if self.__blacksOnBand > 0:
+            if board._BoardState__blacksOnBand > 0:
                 return False
             else:
                 return True
@@ -260,14 +256,14 @@ class Game:
         if currField.number_of_checkers == 0:
             currField.is_empty = True
 
-    def moveToEmptyFromBand(self, destField, currColor):
+    def moveToEmptyFromBand(self, destField, currColor, board):
         destField.is_empty = False
         destField.number_of_checkers = 1
         destField.color = currColor
         if currColor == Color.RED:
-            self.__redsOnBand -= 1
+            board._BoardState__redsOnBand -= 1
         else:
-            self.__blacksOnBand -=1
+            board._BoardState__blacksOnBand -=1
             
 
     def moveToOur(self, destField, currField):
@@ -277,34 +273,34 @@ class Game:
             currField.is_empty = True
 
 
-    def moveToOurFromBand(self, destField, currColor):
+    def moveToOurFromBand(self, destField, currColor, board):
         destField.number_of_checkers += 1
         if currColor == Color.RED:
-            self.__redsOnBand -= 1
+            board._BoardState__redsOnBand -= 1
         else:
-            self.__blacksOnBand -=1
+            board._BoardState__blacksOnBand -=1
 
 
-    def hitEnemy(self, destField, currField):
+    def hitEnemy(self, destField, currField, board):
         currField.number_of_checkers -= 1
         destField.color = currField.color
         if destField.color == Color.BLACK:
-            self.__redsOnBand += 1
+            board._BoardState__redsOnBand += 1
         else:
-            self.__blacksOnBand += 1
+            board._BoardState__blacksOnBand += 1
 
         if currField.number_of_checkers == 0:
             currField.is_empty = True
 
-    def hitEnemyFromBand(self, destField, currColor):
+    def hitEnemyFromBand(self, destField, currColor, board):
         destField.number_of_checkers = 1
         destField.color = currColor
         if currColor == Color.RED:
-            self.__redsOnBand -= 1
-            self.__blacksOnBand += 1
+            board._BoardState__redsOnBand -= 1
+            board._BoardState__blacksOnBand += 1
         else:
-            self.__blacksOnBand -=1
-            self.__redsOnBand += 1
+            board._BoardState__blacksOnBand -=1
+            board._BoardState__redsOnBand += 1
 
     def removeFromBand(self, currColor, board):
         if currColor == Color.RED:
@@ -314,12 +310,12 @@ class Game:
 
         if destField.is_empty == True:
             print("empty")
-            self.moveToEmptyFromBand(destField, currColor)
+            self.moveToEmptyFromBand(destField, currColor, board)
         elif destField.color == currColor:
             print("our")
-            self.moveToOurFromBand(destField, currColor)
+            self.moveToOurFromBand(destField, currColor, board)
         elif destField.number_of_checkers == 1:
-            self.hitEnemyFromBand(destField, currColor)
+            self.hitEnemyFromBand(destField, currColor, board)
         else:
             # there are more than 1 enemy checker on the destination field
             pass
