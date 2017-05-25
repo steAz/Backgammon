@@ -11,7 +11,7 @@ class TraversingLevel(Enum):
     CHANCE = 2
 from logic.AImove import AImove
 
-class AIBot(object):
+class AIbot(object):
     
     def __init__(self):
         self.__moveI = 0
