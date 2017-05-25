@@ -83,7 +83,7 @@ class GameWindow(Frame):
 
         self.__background_label.place(x=0, y=0, relwidth=1, relheight=1)
         if board_state != None:
-            fields = board_state._BoardState__fields_states
+            fields = board_state.__fields_states
             index=0
             for field in fields:
                 self.displayField(field, index)
@@ -148,7 +148,7 @@ class GameWindow(Frame):
 
     def buttonPressed(self, fieldNum=0):
         print(str(self.game._Game__amountOfMoves))
-        if self.board._BoardState__fields_states[fieldNum].color == Color.RED: # we can move only red
+        if self.board.fields_states[fieldNum].color == Color.RED: # we can move only red
             if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0 and self.board._BoardState__redsOnBand == 0:
                 'changing boards state'
                 if self.game.makeTurn(self.board,fieldNum, Color.RED) == True:

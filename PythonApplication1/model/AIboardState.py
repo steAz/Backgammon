@@ -1,15 +1,37 @@
 from logic.AImove import AImove
 from model.BoardState import BoardState
+import copy
 
 class AIboardState(BoardState):
     
-    def __init__(self, move, numOfMoves):
-        self.__AImove = move
-        self.__heuristic = 0
-        self.__diceI = 0
-        self.__diceII = 0
-        self.__numberOfMoves = numOfMoves
+    def __init__(self, move = None, numOfMoves=None, startingBoardState = None):
+        if startingBoardState == None:
+            self.__botMove = move
+            self.__heuristic = 0
+            self.__diceI = 0
+            self.__diceII = 0
+            self.__numberOfMoves = numOfMoves
+            self.__fields_states = []
+            self.__redsOnBand = 0
+            self.__blacksOnBand = 0
+            self.__blacksOnTheCourt = 0
+            self.__redsOnTheCourt = 0
+        else:
+            self.__botMove = move
+            self.__heuristic = 0
+            self.__diceI = 0
+            self.__diceII = 0
+            self.__numberOfMoves = numOfMoves
+            self.__redsOnBand = startingBoardState._BoardState__redsOnBand
+            self.__blacksOnBand = startingBoardState._BoardState__blacksOnBand
+            self.__blacksOnTheCourt = startingBoardState._BoardState__blacksOnTheCourt
+            self.__redsOnTheCourt = startingBoardState._BoardState__redsOnTheCourt
 
+            self.__fields_states = []
+            for field in startingBoardState._BoardState__fields_states:
+                self.__fields_states.append(copy.deepcopy(field))
+
+            
 
     def AIbStateAfterMove(self):
         #move.makeAImove(self)

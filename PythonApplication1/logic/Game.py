@@ -1,6 +1,7 @@
 from tkinter import *
 from random import randint
 from model.GameField import *
+from model.BoardState import BoardState
 
 
 class Game:
@@ -195,8 +196,8 @@ class Game:
             destNumber = fieldNum + self.__currNum
             isBlack = False
 
-        destField = board._BoardState__fields_states[destNumber]
-        currField = board._BoardState__fields_states[fieldNum]
+        destField = board.__fields_states[destNumber]
+        currField = board.__fields_states[fieldNum]
         return self.moveCheckerStandard(destField, currField, currentColor, board) # make normal move
 
 
@@ -219,7 +220,7 @@ class Game:
         amountOfCheckersAtHome = 0
         if currentColor == Color.RED:
             for i in range(18):
-                if board._BoardState__fields_states[i + 6].color == currentColor and board._BoardState__fields_states[i + 6].is_empty == False:
+                if board.__fields_states[i + 6].color == currentColor and board.__fields_states[i + 6].is_empty == False:
                     return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
             if board._BoardState__redsOnBand > 0:
                 return False
@@ -227,7 +228,7 @@ class Game:
                 return True
         else:
             for i in range(18):
-                if board._BoardState__fields_states[i].color == currentColor and board._BoardState__fields_states[i].is_empty == False:
+                if board.__fields_states[i].color == currentColor and board.__fields_states[i].is_empty == False:
                     return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
             if board._BoardState__blacksOnBand > 0:
                 return False

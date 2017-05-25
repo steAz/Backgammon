@@ -21,9 +21,9 @@ class BoardState:
         self.__blacksOnTheCourt = 0
         self.__redsOnTheCourt = 0
         if fields == None:
-            self.__fields_states = BoardState.startingBoardState()
+            self.fields_states = BoardState.startingBoardState()
         else:
-            self.__fields_states = fields
+            self.fields_states = fields
             
     
     @staticmethod
@@ -96,9 +96,9 @@ class BoardState:
         def update_field_at_index(self, index, game_field):
             fields_states.insert(index, game_field) 
 
-        @property
-        def fields_states(self):
-            return self.__fields_states
+        #@property
+        #def fields_states(self):
+        #    return self.__fields_states
                               
                               
                               
