@@ -3,6 +3,7 @@ from model.GameField import GameField
 from logic.Game import *
 from model.GameField import Color
 from model.BoardState import BoardState
+from logic.AIbot import AIbot
 import sys
 #import Tkinter
 
