@@ -2,6 +2,7 @@
 from enum import Enum
 from logic.AImove import AImove
 from model.AIboardState import AIboardState
+from random import randint
 import copy
 import sys
 
@@ -19,12 +20,12 @@ class AIbot(object):
 
 
     def generateChildrenBoardStates(self, startingBoard):
-        newNumberOfMoves = startingBoard.__numberOfMoves
+        newNumberOfMoves = startingBoard._AIboardState__numberOfMoves
         if newNumberOfMoves > 0:
             if newNumberOfMoves == 1:
-                return boardStatesFromDice(startingBoard, startingBoard.__diceI, startingBoard.__AImove.__color)
+                return self.boardStatesFromDice(startingBoard, startingBoard.__diceI, startingBoard.__AImove.__color)
             else:
-                return boardStatesFromDice(startingBoard, startingBoard.__diceII, startingBoard.__AImove.__color)
+                return self.boardStatesFromDice(startingBoard, startingBoard.__diceII, startingBoard.__AImove.__color)
         else:
             AIboards = []
             #generating new boards with new dice roll (CHANCE level)
@@ -62,18 +63,18 @@ class AIbot(object):
         if currDepth == maxDepth:
             return currBoard.__heuristic
         
-        AIchildrenBoards = generateChildrenBoardStates(currBoard)
-        nextTypeOfLevel = setNextTraversingLevel(currBoard, typeOfLevel, previousTypeOfLevel)
+        AIchildrenBoards = self.generateChildrenBoardStates(currBoard)
+        nextTypeOfLevel = self.setNextTraversingLevel(currBoard, typeOfLevel, previousTypeOfLevel)
         if typeOfLevel == TraversingLevel.MIN:
             heuristic_V = sys.minint
             for AIchildBoard in AIchildrenBoards:
-                newBoard = maxMinChanceEvaluateState(AIchildBoard, currDepth + 1, maxDepth, nextTypeOfLevel, typeOfLevel)
+                newBoard = self.maxMinChanceEvaluateState(AIchildBoard, currDepth + 1, maxDepth, nextTypeOfLevel, typeOfLevel)
                 if newBoard.__heuristic < heuristic_V:
                     heuristic_V = newBoard.__heuristic
         elif typeOfLevel == TraversingLevel.MAX:
             heuristic_V = sys.maxint
             for AIchildBoard in AIchildrenBoards:
-                newBoard = maxMinChanceEvaluateState(AIchildBoard, currDepth + 1, maxDepth, nextTypeOfLevel, typeOfLevel)
+                newBoard = self.maxMinChanceEvaluateState(AIchildBoard, currDepth + 1, maxDepth, nextTypeOfLevel, typeOfLevel)
                 if newBoard.__heuristic > heuristic_V:
                     heuristic_V = newBoard.__heuristic
                     if currDepth == 2:
@@ -83,7 +84,7 @@ class AIbot(object):
         elif typeOfLevel == TraversingLevel.CHANCE:
             heuristic_V = 0 
             for AIchildBoard in AIchildrenBoards:
-                newBoard = maxMinChanceEvaluateState(AIchildBoard, currDepth + 1, maxDepth, nextTypeOfLevel, typeOfLevel)
+                newBoard = self.maxMinChanceEvaluateState(AIchildBoard, currDepth + 1, maxDepth, nextTypeOfLevel, typeOfLevel)
                 probabilityOfAIchildBoard = 1/21
                 heuristic_V += probabilityOfAIchildBoard * newBoard.__heuristic
 
@@ -109,3 +110,16 @@ class AIbot(object):
 
         return nextTypeOfLevel
 
+    
+    def makeTurnForBot(self, startingBoard):
+        AIboard = AIboardState() # tutaj trzeba przepisac wszystkie pola i wtedy wywolywac
+        AIboard = copy.deepcopy(startingBoard)
+        AIboard.__diceI = randint(1,6)
+        AIboard.__diceII = randint(1,6)
+        currDepth = 0
+        maxDepth = 5
+        typeOfLevel = TraversingLevel.MAX
+        previousTypeOfLevel = TraversingLevel.MAX
+        self.maxMinChanceEvaluateState(AIboard, currDepth, maxDepth, typeOfLevel, previousTypeOfLevel)
+        self.__moveI.AI.makeAImove(startingBoard)
+        self.__moveII.AI.makeAImove(startingBoard)
