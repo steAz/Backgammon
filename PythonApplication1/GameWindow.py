@@ -1,9 +1,8 @@
 from tkinter import *
-from model.GameField import GameField
-from logic.Game import *
-from model.GameField import Color
-from model.BoardState import BoardState
-from logic.AIbot import AIbot
+from GameField import *
+from Game import *
+from BoardState import BoardState
+from AIbot import AIbot
 import sys
 #import Tkinter
 
@@ -43,15 +42,15 @@ class GameWindow(Frame):
         sys.exit() # if you want to exit the entire thing
 
     def displayBandState(self):
-        if self.board._BoardState__redsOnBand > 0:
-            number_label_red = Label(text=str(self.board._BoardState__redsOnBand))
+        if self.board._redsOnBand > 0:
+            number_label_red = Label(text=str(self.board._redsOnBand))
             self.__widgets.append(number_label_red)
             number_label_red.place(x=693, y=320)
             button_red = Button(image=self.__red_checker_image, command=lambda:self.bandCheckerPressed())
             button_red.place(x=675, y=340)
             self.__widgets.append(button_red)
-        if self.board._BoardState__blacksOnBand > 0:
-            number_label_black = Label(text=str(self.board._BoardState__blacksOnBand))
+        if self.board._blacksOnBand > 0:
+            number_label_black = Label(text=str(self.board._blacksOnBand))
             self.__widgets.append(number_label_black)
             number_label_black.place(x=693, y=430)
             button_black = Button(image=self.__black_checker_image)
@@ -59,15 +58,15 @@ class GameWindow(Frame):
             self.__widgets.append(button_black)
 
     def displayCourtState(self):
-           if self.board._BoardState__redsOnTheCourt > 0:
-                number_label_red = Label(text=str(self.board._BoardState__redsOnTheCourt))
+           if self.board._redsOnTheCourt > 0:
+                number_label_red = Label(text=str(self.board._redsOnTheCourt))
                 self.__widgets.append(number_label_red)
                 number_label_red.place(x=1321, y=220)
                 button_red = Button(image=self.__red_checker_image)
                 button_red.place(x=1303, y=240)
                 self.__widgets.append(button_red)
-           if self.board._BoardState__blacksOnTheCourt > 0:
-                number_label_black = Label(text=str(self.board._BoardState__blacksOnTheCourt))
+           if self.board._blacksOnTheCourt > 0:
+                number_label_black = Label(text=str(self.board._blacksOnTheCourt))
                 self.__widgets.append(number_label_black)
                 number_label_black.place(x=1321, y=630)
                 button_black = Button(image=self.__black_checker_image)
@@ -83,7 +82,7 @@ class GameWindow(Frame):
 
         self.__background_label.place(x=0, y=0, relwidth=1, relheight=1)
         if board_state != None:
-            fields = board_state.__fields_states
+            fields = board_state._fields_states
             index=0
             for field in fields:
                 self.displayField(field, index)
@@ -127,7 +126,7 @@ class GameWindow(Frame):
                 x_coord=514
             elif field_number == 8 or field_number == 15:
                 x_coord=421
-            elif field_number == 7 or field_number == 14:
+            elif field_number == 9 or field_number == 14:
                 x_coord=333
             elif field_number == 10 or field_number == 13:
                 x_coord=243
@@ -147,18 +146,18 @@ class GameWindow(Frame):
     
 
     def buttonPressed(self, fieldNum=0):
-        print(str(self.game._Game__amountOfMoves))
-        if self.board.fields_states[fieldNum].color == Color.RED: # we can move only red
-            if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0 and self.board._BoardState__redsOnBand == 0:
+        print(str(self.game._amountOfMoves))
+        if self.board._fields_states[fieldNum].color == Color.RED: # we can move only red
+            if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._amountOfMoves != 0 and self.board._redsOnBand == 0:
                 'changing boards state'
                 if self.game.makeTurn(self.board,fieldNum, Color.RED) == True:
-                    if  self.game._Game__amountOfMoves == 2:
-                        if self.game._Game__currNum == self.game._Game__currNumI:
+                    if  self.game._amountOfMoves == 2:
+                        if self.game._currNum == self.game._currNumI:
                             self.game.setDice(2)
                         else:
                             self.game.setDice(1)
-                    self.game._Game__amountOfMoves -= 1
-                    if self.game._Game__amountOfMoves == 0:
+                    self.game._amountOfMoves -= 1
+                    if self.game._amountOfMoves == 0:
                         self.AIbot.makeTurnForBot(self.board)
                         self.game.isRandomized = False
                 else:
@@ -168,15 +167,15 @@ class GameWindow(Frame):
         
     def bandCheckerPressed(self):
          
-         if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._Game__amountOfMoves != 0:
+         if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._amountOfMoves != 0:
              self.game.removeFromBand(Color.RED, self.board)
-             if  self.game._Game__amountOfMoves == 2:
-                 if self.game._Game__currNum == self.game._Game__currNumI:
+             if  self.game._amountOfMoves == 2:
+                 if self.game._currNum == self.game._currNumI:
                     self.game.setDice(2)
                  else:
                     self.game.setDice(1)
-             self.game._Game__amountOfMoves -= 1
-             if self.game._Game__amountOfMoves == 0:
+             self.game._amountOfMoves -= 1
+             if self.game._amountOfMoves == 0:
                 self.game.isRandomized = False
 
              self.displayBoardState(self.board)

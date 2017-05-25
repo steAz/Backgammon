@@ -5,7 +5,7 @@ Created on 17 maj 2017
 '''
 
 from tkinter import *
-from view.GameWindow import GameWindow
+from GameWindow import GameWindow
 
 
 def main():

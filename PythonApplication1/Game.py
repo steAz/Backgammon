@@ -1,51 +1,51 @@
 from tkinter import *
 from random import randint
-from model.GameField import *
-from model.BoardState import BoardState
+from GameField import *
+from BoardState import BoardState
 
 
 class Game:
     @property
     def player(self):
-        return self.__player
+        return self._player
 
     def __init__(self):
-        self.__isRandomized = False
-        self.__isDiceChosen = False
-        self.__labelDiceI = None
-        self.__labelDiceII = None
-        self.__currNumI = None
-        self.__currNumII = None
-        self.__currNum = None
-        self.__amountOfMoves = None
+        self._isRandomized = False
+        self._isDiceChosen = False
+        self._labelDiceI = None
+        self._labelDiceII = None
+        self._currNumI = None
+        self._currNumII = None
+        self._currNum = None
+        self._amountOfMoves = None
 
     @player.setter
     def player(self, player):
-        self.__player = player
+        self._player = player
 
 
     def setRandNumbers(self, event=None):
-        if self.__isRandomized == False:
-            self.__isDiceChosen = False
+        if self._isRandomized == False:
+            self._isDiceChosen = False
             numI = randint(1,6)
             numII=randint(1,6)
-            self.__isRandomized = True
+            self._isRandomized = True
             self.displayRandNumbers(numI, numII)
-            self.__currNumI = numI
-            self.__currNumII = numII
+            self._currNumI = numI
+            self._currNumII = numII
 
             if numI == numII:
-                self.__amountOfMoves = 4
+                self._amountOfMoves = 4
             else:
-                self.__amountOfMoves = 2
+                self._amountOfMoves = 2
         
 
     def displayRandNumbers(self, numI, numII):
-        if self.__isRandomized:
-            self.__labelDiceI = Label(text=str(numI))
-            self.__labelDiceII = Label(text=str(numII))
-            self.__labelDiceI.place(x = 20,y = 430)
-            self.__labelDiceII.place(x = 35,y = 430)
+        if self._isRandomized:
+            self._labelDiceI = Label(text=str(numI))
+            self._labelDiceII = Label(text=str(numII))
+            self._labelDiceI.place(x = 20,y = 430)
+            self._labelDiceII.place(x = 35,y = 430)
 
 
     def makeTurn(self, board, fieldNum, currentColor):  # return True means that move has passed
@@ -56,7 +56,6 @@ class Game:
 
         if isNormalValidation == True:
             if self.isValidMove(fieldNum, currentColor, board) == False:
-                print("isValidMove")
                 return False
             return self.normalMove(board, fieldNum, currentColor)
         else: 
@@ -72,16 +71,16 @@ class Game:
 
     def isAnotherFieldsToTheCourt(self, fieldNum, playerColor, board, isLastMove=True):
         if isLastMove == True:
-            secondDice = self.__currNum
-        elif self.__currNum == self.__currNumI:
-            secondDice = self.__currNumII
+            secondDice = self._currNum
+        elif self._currNum == self._currNumI:
+            secondDice = self._currNumII
         else:
-            secondDice = self.__currNumI
+            secondDice = self._currNumI
             
         for i in self.homeIndexes(playerColor):
             if i != fieldNum:
-                if self.fieldsToTheCourt(playerColor, i) == self.__currNum or self.fieldsToTheCourt(playerColor, i) == secondDice:
-                    field = board._BoardState__fields_states[i]
+                if self.fieldsToTheCourt(playerColor, i) == self._currNum or self.fieldsToTheCourt(playerColor, i) == secondDice:
+                    field = board._fields_states[i]
                     if field.is_empty == False and field.color == playerColor:
                         return True
         return False
@@ -92,12 +91,12 @@ class Game:
                 if self.fieldsToTheCourt(playerColor, i) > self.fieldsToTheCourt(playerColor, fieldNum):
                    # print("I")
                     if self.isFieldInTheSameColor(i, playerColor, board) == True:
-                        #print("numer:  " + str(i)  + str(board._BoardState__fields_states[i].is_empty))
+                        #print("numer:  " + str(i)  + str(board._fields_states[i].is_empty))
                         return True
         return False
 
     def isFieldInTheSameColor(self, fieldNum, playerColor, board):
-        field = board._BoardState__fields_states[fieldNum]
+        field = board._fields_states[fieldNum]
         if field.is_empty == False and field.color == playerColor:
             return True
         else:
@@ -105,13 +104,13 @@ class Game:
 
     def homeMove(self, board, fieldNum, playerColor):
         if playerColor == Color.RED:
-            destNumber = fieldNum - self.__currNum
+            destNumber = fieldNum - self._currNum
         else:
-            destNumber = fieldNum + self.__currNum
-        destField = board._BoardState__fields_states[destNumber]
+            destNumber = fieldNum + self._currNum
+        destField = board._fields_states[destNumber]
 
-        if self.__amountOfMoves == 1: #jesli jest to ostatni ruch
-            if self.fieldsToTheCourt(playerColor, fieldNum) == self.__currNum:   #jesli nasza pozycja jest na pozycji wybranej kostki, to wyjdz na dwor
+        if self._amountOfMoves == 1: #jesli jest to ostatni ruch
+            if self.fieldsToTheCourt(playerColor, fieldNum) == self._currNum:   #jesli nasza pozycja jest na pozycji wybranej kostki, to wyjdz na dwor
                 self.moveToTheCourt(fieldNum, playerColor, board)
                 return True
             elif self.isAnotherFieldsToTheCourt(fieldNum, playerColor, board) == True:
@@ -121,19 +120,19 @@ class Game:
                 print("isAnotherFurther")
                 return False
             elif destNumber <= 23 and destNumber >= 0:
-                field = board._BoardState__fields_states[fieldNum]
+                field = board._fields_states[fieldNum]
                 return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
             else:
                 self.moveToTheCourt(fieldNum, playerColor, board)
                 return True
         else: # jesli zostal jeszcze jeden ruch, albo wiecej przy dublecie
-            if self.fieldsToTheCourt(playerColor, fieldNum) == self.__currNumI or self.fieldsToTheCourt(playerColor, fieldNum) == self.__currNumII:
+            if self.fieldsToTheCourt(playerColor, fieldNum) == self._currNumI or self.fieldsToTheCourt(playerColor, fieldNum) == self._currNumII:
                 #chosen field is correct (distance to court equals dice's roll)
-                if self.fieldsToTheCourt(playerColor, fieldNum) == self.__currNum:
+                if self.fieldsToTheCourt(playerColor, fieldNum) == self._currNum:
                     self.moveToTheCourt(fieldNum, playerColor, board)
                     return True
                 elif destNumber <= 23 and destNumber >= 0:
-                    field = board._BoardState__fields_states[fieldNum]
+                    field = board._fields_states[fieldNum]
                     return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
                 else:
                     self.moveToTheCourt(fieldNum, playerColor, board)
@@ -146,7 +145,7 @@ class Game:
                     print("isAnotherFurther_2")
                     return False
                 elif destNumber <= 23 and destNumber >= 0:
-                    field = board._BoardState__fields_states[fieldNum]
+                    field = board._fields_states[fieldNum]
                     return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
                 else:
                     self.moveToTheCourt(fieldNum, playerColor, board)
@@ -162,25 +161,25 @@ class Game:
     def moveToTheCourt(self, fieldNum, playerColor, board):
         print("movetoTheCOurt called")
         if playerColor == Color.RED:
-            board._BoardState__redsOnTheCourt += 1
+            board._redsOnTheCourt += 1
         else:
-            board._BoardState__blacksOnTheCourt += 1
+            board._blacksOnTheCourt += 1
 
-        field =  board._BoardState__fields_states[fieldNum]
+        field =  board._fields_states[fieldNum]
         field.number_of_checkers -= 1
         if field.number_of_checkers == 0:
             field.is_empty = True 
         
-    # method returns true if we can move checker from fieldNumber by self.__currNum positions ## IT DOESTN CHECK THE HOME VALIDATION WHEN PLAYER WANTS TO WIN ##
+    # method returns true if we can move checker from fieldNumber by self._currNum positions ## IT DOESTN CHECK THE HOME VALIDATION WHEN PLAYER WANTS TO WIN ##
     def isValidMove(self, fieldNumber, playerColor, board):
         if playerColor == Color.RED:
-            destNumber = fieldNumber - self.__currNum
+            destNumber = fieldNumber - self._currNum
         else:
-            destNumber = fieldNumber + self.__currNum
+            destNumber = fieldNumber + self._currNum
 
         if destNumber > 23 or destNumber < 0:
             return False
-        destField = board._BoardState__fields_states[destNumber]
+        destField = board._fields_states[destNumber]
 
         if destField.color != playerColor and destField.number_of_checkers > 1:
             return False
@@ -190,14 +189,14 @@ class Game:
         
     def normalMove(self, board, fieldNum, currentColor):
         if currentColor == Color.RED:
-            destNumber = fieldNum - self.__currNum
+            destNumber = fieldNum - self._currNum
             isRed = True
         else:
-            destNumber = fieldNum + self.__currNum
+            destNumber = fieldNum + self._currNum
             isBlack = False
 
-        destField = board.__fields_states[destNumber]
-        currField = board.__fields_states[fieldNum]
+        destField = board._fields_states[destNumber]
+        currField = board._fields_states[fieldNum]
         return self.moveCheckerStandard(destField, currField, currentColor, board) # make normal move
 
 
@@ -220,33 +219,33 @@ class Game:
         amountOfCheckersAtHome = 0
         if currentColor == Color.RED:
             for i in range(18):
-                if board.__fields_states[i + 6].color == currentColor and board.__fields_states[i + 6].is_empty == False:
-                    return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
-            if board._BoardState__redsOnBand > 0:
+                if board._fields_states[i + 6].color == currentColor and board._fields_states[i + 6].is_empty == False:
+                    return False    #amountOfCheckersOutOfHome += board._fields_states[i + 5].number_of_checkers
+            if board._redsOnBand > 0:
                 return False
             else:
                 return True
         else:
             for i in range(18):
-                if board.__fields_states[i].color == currentColor and board.__fields_states[i].is_empty == False:
-                    return False    #amountOfCheckersOutOfHome += board._BoardState__fields_states[i + 5].number_of_checkers
-            if board._BoardState__blacksOnBand > 0:
+                if board._fields_states[i].color == currentColor and board._fields_states[i].is_empty == False:
+                    return False    #amountOfCheckersOutOfHome += board._fields_states[i + 5].number_of_checkers
+            if board._blacksOnBand > 0:
                 return False
             else:
                 return True
 
 
     def setDice(self,  numOfDice = 0, event=None):
-        if self.__amountOfMoves != 1: # when we're not allowed to change dice
-            self.__isDiceChosen = True
+        if self._amountOfMoves != 1: # when we're not allowed to change dice
+            self._isDiceChosen = True
             if numOfDice == 1:
-                self.__labelDiceI.configure(foreground="red")
-                self.__labelDiceII.configure(foreground="black")
-                self.__currNum = self.__currNumI
+                self._labelDiceI.configure(foreground="red")
+                self._labelDiceII.configure(foreground="black")
+                self._currNum = self._currNumI
             else:
-                self.__labelDiceII.configure(foreground="red")
-                self.__labelDiceI.configure(foreground="black")
-                self.__currNum = self.__currNumII
+                self._labelDiceII.configure(foreground="red")
+                self._labelDiceI.configure(foreground="black")
+                self._currNum = self._currNumII
 
     #moving to empty field
     def moveToEmpty(self, destField, currField):
@@ -262,9 +261,9 @@ class Game:
         destField.number_of_checkers = 1
         destField.color = currColor
         if currColor == Color.RED:
-            board._BoardState__redsOnBand -= 1
+            board._redsOnBand -= 1
         else:
-            board._BoardState__blacksOnBand -=1
+            board._blacksOnBand -=1
             
 
     def moveToOur(self, destField, currField):
@@ -277,18 +276,18 @@ class Game:
     def moveToOurFromBand(self, destField, currColor, board):
         destField.number_of_checkers += 1
         if currColor == Color.RED:
-            board._BoardState__redsOnBand -= 1
+            board._redsOnBand -= 1
         else:
-            board._BoardState__blacksOnBand -=1
+            board._blacksOnBand -=1
 
 
     def hitEnemy(self, destField, currField, board):
         currField.number_of_checkers -= 1
         destField.color = currField.color
         if destField.color == Color.BLACK:
-            board._BoardState__redsOnBand += 1
+            board._redsOnBand += 1
         else:
-            board._BoardState__blacksOnBand += 1
+            board._blacksOnBand += 1
 
         if currField.number_of_checkers == 0:
             currField.is_empty = True
@@ -297,17 +296,17 @@ class Game:
         destField.number_of_checkers = 1
         destField.color = currColor
         if currColor == Color.RED:
-            board._BoardState__redsOnBand -= 1
-            board._BoardState__blacksOnBand += 1
+            board._redsOnBand -= 1
+            board._blacksOnBand += 1
         else:
-            board._BoardState__blacksOnBand -=1
-            board._BoardState__redsOnBand += 1
+            board._blacksOnBand -=1
+            board._redsOnBand += 1
 
     def removeFromBand(self, currColor, board):
         if currColor == Color.RED:
-            destField = board._BoardState__fields_states[24 - self.__currNum]
+            destField = board._fields_states[24 - self._currNum]
         else:
-            destField = board._BoardState__fields_states[self.__currNum - 1]
+            destField = board._fields_states[self._currNum - 1]
 
         if destField.is_empty == True:
             print("empty")
@@ -324,20 +323,20 @@ class Game:
                  
     @property
     def currDice(self):
-        return self.__currNum
+        return self._currNum
 
     @property
     def isRandomized(self):
-        return self.__isRandomized
+        return self._isRandomized
 
     @property
     def isDiceChosen(self):
-        return self.__isDiceChosen
+        return self._isDiceChosen
 
     @isDiceChosen.setter
     def isDiceChosen(self, new_amount):
-        self.__isDiceChosen = new_amount
+        self._isDiceChosen = new_amount
 
     @isRandomized.setter
     def isRandomized(self, new_amount):
-        self.__isRandomized = new_amount
+        self._isRandomized = new_amount
