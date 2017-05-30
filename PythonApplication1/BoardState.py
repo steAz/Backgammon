@@ -29,55 +29,55 @@ class BoardState:
     def startingBoardState():
         'static method which returns list of 24 fields containing starting state'
         default_fields = []
-        #default_fields.append(GameField(False, 2, Color.BLACK)) #5
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))   
-        #default_fields.append(GameField(is_empty=True))                                                                    
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(False, 5, Color.RED))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(False, 3, Color.RED))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(False, 5, Color.BLACK)) #3
-        #default_fields.append(GameField(False, 5, Color.RED))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(False, 3, Color.BLACK)) #5
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(False, 5, Color.BLACK)) #5
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(is_empty=True))
-        #default_fields.append(GameField(False, 2, Color.RED))
-
-        default_fields.append(GameField(is_empty=True)) #5
+        default_fields.append(GameField(False, 2, Color.BLACK)) #5
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))   
         default_fields.append(GameField(is_empty=True))                                                                    
         default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(False, 5, Color.RED))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(False, 3, Color.RED))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(False, 5, Color.BLACK)) #3
+        default_fields.append(GameField(False, 5, Color.RED))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(False, 3, Color.BLACK)) #5
+        default_fields.append(GameField(is_empty=True))
+        default_fields.append(GameField(False, 5, Color.BLACK)) #5
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
         default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True)) #3
-        default_fields.append(GameField(False, 15, Color.RED))
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True)) #5
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(is_empty=True)) #5
-        default_fields.append(GameField(is_empty=True))
-        default_fields.append(GameField(False, 2, Color.BLACK))
-        default_fields.append(GameField(False, 3, Color.BLACK))
-        default_fields.append(GameField(False, 8, Color.BLACK))
-        default_fields.append(GameField(False, 2, Color.BLACK))
+        default_fields.append(GameField(False, 2, Color.RED))
+
+        #default_fields.append(GameField(is_empty=True)) #5
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))   
+        #default_fields.append(GameField(is_empty=True))                                                                    
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True)) #3
+        #default_fields.append(GameField(False, 15, Color.RED))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True)) #5
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(is_empty=True)) #5
+        #default_fields.append(GameField(is_empty=True))
+        #default_fields.append(GameField(False, 2, Color.BLACK))
+        #default_fields.append(GameField(False, 3, Color.BLACK))
+        #default_fields.append(GameField(False, 8, Color.BLACK))
+        #default_fields.append(GameField(False, 2, Color.BLACK))
         
         return default_fields
                               
