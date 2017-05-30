@@ -278,7 +278,7 @@ class Game:
         if currColor == Color.RED:
             board._redsOnBand -= 1
         else:
-            board._blacksOnBand -=1
+            board._blacksOnBand -= 1
 
 
     def hitEnemy(self, destField, currField, board):
@@ -319,6 +319,19 @@ class Game:
         else:
             # there are more than 1 enemy checker on the destination field
             pass
+
+    def ableToEscapeBand(self, currColor, board):
+        if currColor == Color.RED:
+            destField1 = board._fields_states[24 - self._currNumI]
+            destField2 = board._fields_states[24 - self._currNumII]
+        else:
+            destField1 = board._fields_states[self._currNumI - 1]
+            destField2 = board._fields_states[self._currNumII - 1]
+        if destField1.is_empty == False and destField1.color != currColor and destField1.number_of_checkers > 1:
+            if destField2.is_empty == False and destField2.color != currColor and destField2.number_of_checkers > 1:
+                return False
+
+        return True
         
                  
     @property

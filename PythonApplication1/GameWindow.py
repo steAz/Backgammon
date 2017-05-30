@@ -158,7 +158,7 @@ class GameWindow(Frame):
                             self.game.setDice(1)
                     self.game._amountOfMoves -= 1
                     if self.game._amountOfMoves == 0:
-                        self.AIbot.makeTurnForBot(self.board)
+                        self.AIbot.makeTurnForBot(self.board, Color.BLACK)
                         self.game.isRandomized = False
                 else:
                     print("niewlasciwy ruch")
@@ -168,6 +168,10 @@ class GameWindow(Frame):
     def bandCheckerPressed(self):
          
          if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._amountOfMoves != 0:
+             if self.game.ableToEscapeBand(Color.RED, self.board) == False:
+                 self.AIbot.makeTurnForBot(self.board, Color.BLACK)
+                 self.game.isRandomized = False
+                 return 0
              self.game.removeFromBand(Color.RED, self.board)
              if  self.game._amountOfMoves == 2:
                  if self.game._currNum == self.game._currNumI:
@@ -176,6 +180,7 @@ class GameWindow(Frame):
                     self.game.setDice(1)
              self.game._amountOfMoves -= 1
              if self.game._amountOfMoves == 0:
+                self.AIbot.makeTurnForBot(self.board, Color.BLACK)
                 self.game.isRandomized = False
 
              self.displayBoardState(self.board)

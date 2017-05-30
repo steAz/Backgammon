@@ -49,7 +49,7 @@ class AIboardState(BoardState):
         index = 0
         #calculating black
 
-        resultBlack += 15 * self._redsOnBand
+        resultBlack += 50 * self._redsOnBand
         resultRed += 15 * self._blacksOnBand
 
         for field in self._fields_states:
@@ -75,6 +75,11 @@ class AIboardState(BoardState):
                     if field._number_of_checkers > 1:
                         resultBlack += 3 * (8 - index)
             index += 1
+
+            for i in range(18, 23): # duzo pkt dajemy dla pionkow w domu
+                if field._is_empty == False and field._color == Color.BLACK:
+                    if self._fields_states[i].number_of_checkers > 1:
+                        resultBlack += 50
 
         return (resultBlack - resultRed)
 
