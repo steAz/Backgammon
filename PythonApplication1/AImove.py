@@ -2,11 +2,13 @@ from Game import Game
 from GameField import Color
 
 class AImove(Game):
-    def __init__(self, color, diceNum, fieldNum, amountOfMoves, bandMove=False):
+    def __init__(self, color, diceNum, diceNumI, diceNumII, fieldNum, amountOfMoves, bandMove=False):
         self._currNum = diceNum
         self._fieldNum = fieldNum
         self._color = color
         self._amountOfMoves = amountOfMoves
+        self._currNumI = diceNumI
+        self._currNumII = diceNumII
         self._isBandMove = bandMove#if true it's move from band
         
     def makeAImove(self, AIboard):

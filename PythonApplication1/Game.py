@@ -107,7 +107,7 @@ class Game:
             destNumber = fieldNum - self._currNum
         else:
             destNumber = fieldNum + self._currNum
-        destField = board._fields_states[destNumber]
+       # destField = board._fields_states[destNumber]
 
         if self._amountOfMoves == 1: #jesli jest to ostatni ruch
             if self.fieldsToTheCourt(playerColor, fieldNum) == self._currNum:   #jesli nasza pozycja jest na pozycji wybranej kostki, to wyjdz na dwor
@@ -121,6 +121,7 @@ class Game:
                 return False
             elif destNumber <= 23 and destNumber >= 0:
                 field = board._fields_states[fieldNum]
+                destField = board._fields_states[destNumber]
                 return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
             else:
                 self.moveToTheCourt(fieldNum, playerColor, board)
@@ -133,6 +134,7 @@ class Game:
                     return True
                 elif destNumber <= 23 and destNumber >= 0:
                     field = board._fields_states[fieldNum]
+                    destField = board._fields_states[destNumber]
                     return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
                 else:
                     self.moveToTheCourt(fieldNum, playerColor, board)
@@ -146,6 +148,7 @@ class Game:
                     return False
                 elif destNumber <= 23 and destNumber >= 0:
                     field = board._fields_states[fieldNum]
+                    destField = board._fields_states[destNumber]
                     return self.moveCheckerStandard(destField, field, playerColor, board) # make normal move
                 else:
                     self.moveToTheCourt(fieldNum, playerColor, board)

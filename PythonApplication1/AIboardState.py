@@ -13,6 +13,8 @@ class AIboardState(BoardState):
             self._diceII = 0
             self._numberOfMoves = numOfMoves
             self._botMove._amountOfMoves = self._numberOfMoves
+            self._botMove._currNumI = 0
+            self._botMove._currNumII = 0
             self._fields_states = []
             self._redsOnBand = 0
             self._blacksOnBand = 0
@@ -24,6 +26,8 @@ class AIboardState(BoardState):
             self._heuristic = 0
             self._diceI = 0
             self._diceII = 0
+            self._botMove._currNumI = 0
+            self._botMove._currNumII = 0
             self._numberOfMoves = numOfMoves
             self._botMove._amountOfMoves = self._numberOfMoves
             self._redsOnBand = startingBoardState._redsOnBand

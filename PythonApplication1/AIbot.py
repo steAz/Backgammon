@@ -29,9 +29,9 @@ class AIbot(object):
         newNumberOfMoves = startingBoard._numberOfMoves
         if newNumberOfMoves > 0:
             if newNumberOfMoves == 1:
-                return self.boardStatesFromDice(startingBoard, startingBoard._diceI, startingBoard._botMove._color)
+                return self.boardStatesFromDice(startingBoard, startingBoard._diceI, startingBoard._diceI, startingBoard._diceII, startingBoard._botMove._color)
             else:
-                return self.boardStatesFromDice(startingBoard, startingBoard._diceII, startingBoard._botMove._color)
+                return self.boardStatesFromDice(startingBoard, startingBoard._diceII, startingBoard._diceI, startingBoard._diceII, startingBoard._botMove._color)
         else:
             AIboards = []
             #generating new boards with new dice roll (CHANCE level)
@@ -55,7 +55,7 @@ class AIbot(object):
             return AIboards
 
 
-    def boardStatesFromDice(self, currBoard, diceNum, currColor):
+    def boardStatesFromDice(self, currBoard, diceNum, diceNumI, diceNumII, currColor):
         #generates all boardStates available: from currBoard using diceNumber roll( diceNumber == <1;6> )
         AIboards = []
         fieldIndex = 0
@@ -71,7 +71,7 @@ class AIbot(object):
             for field in currBoard._fields_states:
                 if currColor == field._color and field._is_empty == False:
                     newBoard = copy.deepcopy(currBoard)
-                    newBoard._botMove = AImove(currColor, diceNum, fieldIndex, newBoard._numberOfMoves)
+                    newBoard._botMove = AImove(currColor, diceNum, diceNumI, diceNumII, fieldIndex, newBoard._numberOfMoves)
                     isValidMove = newBoard._botMove.makeTurn(newBoard, fieldIndex, currColor)
                     if isValidMove == True:
                         newBoard.AIbStateAfterMove() #calculated move and heuristic for one board in state
@@ -81,7 +81,7 @@ class AIbot(object):
             #print("Generuje True")
             #checkers on band:
             newBoard = copy.deepcopy(currBoard)
-            newBoard._botMove = AImove(currColor, diceNum, 0, currBoard._numberOfMoves)
+            newBoard._botMove = AImove(currColor, diceNum, diceNumI, diceNumII, 0, currBoard._numberOfMoves)
             newBoard._botMove.removeFromBand(currColor, newBoard) # newBoard._botMove.removeFromBand(currColor, currBoard) -- JAK MOZNA !?????? currBoard ??? why :CCCC
             newBoard.AIbStateAfterMove()
             AIboards.append(newBoard)
@@ -136,9 +136,9 @@ class AIbot(object):
         openSet = []
 
         if currBoard._numberOfMoves == 1:
-            openSet = self.boardStatesFromDice(currBoard, currBoard._diceI, currBoard._botMove._color)
+            openSet = self.boardStatesFromDice(currBoard, currBoard._diceI, currBoard._diceI, currBoard._diceII, currBoard._botMove._color)
         else:
-            openSet = self.boardStatesFromDice(currBoard, currBoard._diceII, currBoard._botMove._color) #zacznymay od drgueij kostki
+            openSet = self.boardStatesFromDice(currBoard, currBoard._diceII, currBoard._diceI, currBoard._diceII, currBoard._botMove._color) #zacznymay od drgueij kostki
 
         openSetHeuristic = []
         for AIboard in openSet:
@@ -154,9 +154,9 @@ class AIbot(object):
             openSet.remove(AIboardWithMaxHeuristic)
 
             if AIboardWithMaxHeuristic._numberOfMoves == 1:
-                AIchildrenBoards = self.boardStatesFromDice(AIboardWithMaxHeuristic, AIboardWithMaxHeuristic._diceI, AIboardWithMaxHeuristic._botMove._color)
+                AIchildrenBoards = self.boardStatesFromDice(AIboardWithMaxHeuristic, AIboardWithMaxHeuristic._diceI, AIboardWithMaxHeuristic._diceI, AIboardWithMaxHeuristic._diceII, AIboardWithMaxHeuristic._botMove._color)
             else:
-                AIchildrenBoards = self.boardStatesFromDice(AIboardWithMaxHeuristic, AIboardWithMaxHeuristic._diceII, AIboardWithMaxHeuristic._botMove._color)
+                AIchildrenBoards = self.boardStatesFromDice(AIboardWithMaxHeuristic, AIboardWithMaxHeuristic._diceII, AIboardWithMaxHeuristic._diceI, AIboardWithMaxHeuristic._diceII, AIboardWithMaxHeuristic._botMove._color)
 
             tentative_g_score = -1000
             for AIchildBoard in AIchildrenBoards:
@@ -244,6 +244,7 @@ class AIbot(object):
 
         return nextTypeOfLevel
 
+
     def setMoves(self, ammountOfBlackOnBand, diceNumI, diceNumII):
         if diceNumI == diceNumII:
             isDouble = True
@@ -252,44 +253,45 @@ class AIbot(object):
 
         if isDouble:
             if ammountOfBlackOnBand == 0:
-                self._moveI = AImove(Color.BLACK, diceNumI, 0, 4)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 3)
-                self._moveIII = AImove(Color.BLACK, diceNumI, 0, 2)
-                self._moveIV = AImove(Color.BLACK, diceNumI, 0, 1)
+                self._moveI = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 4)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 3)
+                self._moveIII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 2)
+                self._moveIV = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1)
             elif ammountOfBlackOnBand == 1:
-                self._moveI = AImove(Color.BLACK, diceNumI, 0, 4, True)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 3)
-                self._moveIII = AImove(Color.BLACK, diceNumI, 0, 2)
-                self._moveIV = AImove(Color.BLACK, diceNumI, 0, 1)
+                self._moveI = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 4, True)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 3)
+                self._moveIII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 2)
+                self._moveIV = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1)
             elif ammountOfBlackOnBand == 2:
-                self._moveI = AImove(Color.BLACK, diceNumI, 0, 4, True)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 3, True)
-                self._moveIII = AImove(Color.BLACK, diceNumI, 0, 2)
-                self._moveIV = AImove(Color.BLACK, diceNumI, 0, 1)       
+                self._moveI = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 4, True)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 3, True)
+                self._moveIII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 2)
+                self._moveIV = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1)       
             elif ammountOfBlackOnBand == 3:
-                self._moveI = AImove(Color.BLACK, diceNumI, 0, 4, True)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 3, True)
-                self._moveIII = AImove(Color.BLACK, diceNumI, 0, 2, True)
-                self._moveIV = AImove(Color.BLACK, diceNumI, 0, 1)    
+                self._moveI = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 4, True)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 3, True)
+                self._moveIII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 2, True)
+                self._moveIV = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1)    
             elif ammountOfBlackOnBand == 4:
-                self._moveI = AImove(Color.BLACK, diceNumI, 0, 4, True)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 3, True)
-                self._moveIII = AImove(Color.BLACK, diceNumI, 0, 2, True)
-                self._moveIV = AImove(Color.BLACK, diceNumI, 0, 1, True)    
+                self._moveI = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 4, True)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 3, True)
+                self._moveIII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 2, True)
+                self._moveIV = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1, True)    
         else:
             if ammountOfBlackOnBand == 0:
-                self._moveI = AImove(Color.BLACK, diceNumII, 0, 2)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 1)
+                self._moveI = AImove(Color.BLACK, diceNumII, diceNumI, diceNumII, 0, 2)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1)
             elif ammountOfBlackOnBand == 1:
-                self._moveI = AImove(Color.BLACK, diceNumII, 0, 2, True)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 1)
+                self._moveI = AImove(Color.BLACK, diceNumII, diceNumI, diceNumII, 0, 2, True)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1)
             elif ammountOfBlackOnBand == 2:
-                self._moveI = AImove(Color.BLACK, diceNumII, 0, 2, True)
-                self._moveII = AImove(Color.BLACK, diceNumI, 0, 1, True)
+                self._moveI = AImove(Color.BLACK, diceNumII, diceNumI, diceNumII, 0, 2, True)
+                self._moveII = AImove(Color.BLACK, diceNumI, diceNumI, diceNumII, 0, 1, True)
+
 
     def printData(self, currBoard):
         self.checkBoard(currBoard)
-        AIboard = AIboardState(AImove(Color.BLACK, 0, 0, 2), 0, currBoard)
+        AIboard = AIboardState(AImove(Color.BLACK, 0, 0, 0, 0, 2), 0, currBoard)
         AIboard._heuristic = AIboard.calculateHeuristic()
         print(str(self._totalNumberOfMoves) + " " + str(AIboard._heuristic))
     def checkBoard(self, board):
@@ -302,7 +304,7 @@ class AIbot(object):
             print("WIEKSZE: " + str(numberOfBlacks))
     
     def setAIboard(self, AIboard, startingBoard, color, diceI, diceII, numberOfMoves):
-        newAIboard = AIboardState(AImove(color, diceI, 0, numberOfMoves), 0, startingBoard) # tutaj trzeba przepisac wszystkie pola i wtedy wywolywac
+        newAIboard = AIboardState(AImove(color, diceI, diceI, diceII, 0, numberOfMoves), 0, startingBoard) # tutaj trzeba przepisac wszystkie pola i wtedy wywolywac
 
         newAIboard._diceI = diceI
         newAIboard._diceII = diceII
@@ -315,7 +317,7 @@ class AIbot(object):
 
 
     def makeTurnForAstar(self, startingBoard, color):
-        AIboard = AIboardState(AImove(color, 0, 0, 2), 0, startingBoard) 
+        AIboard = AIboardState(AImove(color, 0, 0, 0, 0, 2), 0, startingBoard) 
         AIboard._diceI = randint(1,6)
         AIboard._diceII = randint(1,6)
         print("Kostka 1 " + str(AIboard._diceI))
@@ -323,15 +325,15 @@ class AIbot(object):
         if AIboard._diceI == AIboard._diceII:
             AIboard._numberOfMoves = 4
             AIboard._botMove._amountOfMoves = 4
-            self._moveI = AImove(Color.BLACK, AIboard._diceI, 0, 4)
-            self._moveII = AImove(Color.BLACK, AIboard._diceI, 0, 3) 
-            self._moveIII = AImove(Color.BLACK, AIboard._diceI, 0, 2)
-            self._moveIV = AImove(Color.BLACK, AIboard._diceI, 0, 1) 
+            self._moveI = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 4)
+            self._moveII = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 3) 
+            self._moveIII = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 2)
+            self._moveIV = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 1) 
         else:
             AIboard._numberOfMoves = 2
             AIboard._botMove._amountOfMoves = 2
-            self._moveI = AImove(Color.BLACK, AIboard._diceII, 0, 2)
-            self._moveII = AImove(Color.BLACK, AIboard._diceI, 0, 1) 
+            self._moveI = AImove(Color.BLACK, AIboard._diceII, AIboard._diceI, AIboard._diceII, 0, 2)
+            self._moveII = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 1) 
 
         AIboard._botMove._currNum = AIboard._diceII
 
@@ -363,9 +365,9 @@ class AIbot(object):
     def makeTurnForBot(self, startingBoard, color):
         self.setBestHeuristics()
         if startingBoard._blacksOnBand > 0:
-            AIboard = AIboardState(AImove(color, 0, 0, 2), 0, startingBoard) # tutaj trzeba przepisac wszystkie pola i wtedy wywolywac
+            AIboard = AIboardState(AImove(color, 0, 0, 0, 0, 2), 0, startingBoard) # tutaj trzeba przepisac wszystkie pola i wtedy wywolywac
         else:
-            AIboard = AIboardState(AImove(color, 0, 0, 2), 0, startingBoard) 
+            AIboard = AIboardState(AImove(color, 0, 0, 0, 0, 2), 0, startingBoard) 
        # AIboard._botMove = AImove(Color.BLACK, 0)
         AIboard._diceI = randint(1,6)
         AIboard._diceII = randint(1,6)
@@ -374,15 +376,15 @@ class AIbot(object):
         if AIboard._diceI == AIboard._diceII:
             AIboard._numberOfMoves = 4
             AIboard._botMove._amountOfMoves = 4
-            self._moveI = AImove(Color.BLACK, AIboard._diceI, 0, 4)
-            self._moveII = AImove(Color.BLACK, AIboard._diceI, 0, 3) 
-            self._moveIII = AImove(Color.BLACK, AIboard._diceI, 0, 2)
-            self._moveIV = AImove(Color.BLACK, AIboard._diceI, 0, 1) 
+            self._moveI = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 4)
+            self._moveII = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 3) 
+            self._moveIII = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 2)
+            self._moveIV = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 1) 
         else:
             AIboard._numberOfMoves = 2
             AIboard._botMove._amountOfMoves = 2
-            self._moveI = AImove(Color.BLACK, AIboard._diceII, 0, 2)
-            self._moveII = AImove(Color.BLACK, AIboard._diceI, 0, 1) 
+            self._moveI = AImove(Color.BLACK, AIboard._diceII, AIboard._diceI, AIboard._diceII, 0, 2)
+            self._moveII = AImove(Color.BLACK, AIboard._diceI, AIboard._diceI, AIboard._diceII, 0, 1) 
 
         #self.setMoves(AIboard._blacksOnBand, AIboard._diceI, AIboard._diceII)
         AIboard._botMove._currNum = AIboard._diceII

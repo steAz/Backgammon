@@ -196,9 +196,9 @@ class GameWindow(Frame):
     #function returns if is it possible for player to make any move on board
     def isMovePossible(self):
        # print("wywolano " + str(self.game._currNumI) + " " + str(self.game._currNumII))
-        AIboard = AIboardState(AImove(Color.RED, 0, 0, 2), 0, self.board)
-        possibleMovesI = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumI, Color.RED)
-        possibleMovesII = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumII, Color.RED)
+        AIboard = AIboardState(AImove(Color.RED, 0, 0, 0, 0, 2), 0, self.board)
+        possibleMovesI = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumI, self.game._currNumI, self.game._currNumII, Color.RED)
+        possibleMovesII = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumII, self.game._currNumI, self.game._currNumII, Color.RED)
         if not possibleMovesI and not possibleMovesII:
             return False
         else:
