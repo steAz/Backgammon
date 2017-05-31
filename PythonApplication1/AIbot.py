@@ -148,6 +148,7 @@ class AIbot(object):
             maxHeur = max(openSetHeuristic)
             openSetHeuristic.remove(maxHeur)
 
+            AIboardWithMaxHeuristic = None
             for AIboard in openSet:
                 if AIboard._heuristic == maxHeur:
                     AIboardWithMaxHeuristic = AIboard
@@ -159,6 +160,7 @@ class AIbot(object):
                 AIchildrenBoards = self.boardStatesFromDice(AIboardWithMaxHeuristic, AIboardWithMaxHeuristic._diceII, AIboardWithMaxHeuristic._diceI, AIboardWithMaxHeuristic._diceII, AIboardWithMaxHeuristic._botMove._color)
 
             tentative_g_score = -1000
+            theBestChildBoard = None
             for AIchildBoard in AIchildrenBoards:
                 heuristic_between = AIchildBoard._heuristic - AIboardWithMaxHeuristic._heuristic
                 if tentative_g_score < heuristic_between:
@@ -167,10 +169,16 @@ class AIbot(object):
                 if tentative_is_better == True:
                     theBestChildBoard = AIchildBoard
 
-            AIboardWithMaxHeuristic.f_score = AIboardWithMaxHeuristic._heuristic + theBestChildBoard._heuristic
+            if theBestChildBoard != None:
+                AIboardWithMaxHeuristic.f_score = AIboardWithMaxHeuristic._heuristic + theBestChildBoard._heuristic
+            else:
+                AIboardWithMaxHeuristic.f_score = AIboardWithMaxHeuristic._heuristic
             closedSet.append(AIboardWithMaxHeuristic)
         
-        theReturningBoard = closedSet[0]
+        if AIboardWithMaxHeuristic != None:
+            theReturningBoard = closedSet[0]
+        else:
+            theReturningBoard =  currBoard
         for AIboard in closedSet:
             if AIboard.f_score > theReturningBoard.f_score:
                 theReturningBoard = AIboard
@@ -290,19 +298,12 @@ class AIbot(object):
 
 
     def printData(self, currBoard):
-        self.checkBoard(currBoard)
         AIboard = AIboardState(AImove(Color.BLACK, 0, 0, 0, 0, 2), 0, currBoard)
         AIboard._heuristic = AIboard.calculateHeuristic()
         print(str(self._totalNumberOfMoves) + " " + str(AIboard._heuristic))
-    def checkBoard(self, board):
-        numberOfBlacks = 0
-        for field in board._fields_states:
-            if field.is_empty == False and field.color == Color.BLACK:
-                numberOfBlacks += field.number_of_checkers
-
-        if numberOfBlacks > 15:
-            print("WIEKSZE: " + str(numberOfBlacks))
+        self._totalNumberOfMoves += 1
     
+
     def setAIboard(self, AIboard, startingBoard, color, diceI, diceII, numberOfMoves):
         newAIboard = AIboardState(AImove(color, diceI, diceI, diceII, 0, numberOfMoves), 0, startingBoard) # tutaj trzeba przepisac wszystkie pola i wtedy wywolywac
 
@@ -320,8 +321,8 @@ class AIbot(object):
         AIboard = AIboardState(AImove(color, 0, 0, 0, 0, 2), 0, startingBoard) 
         AIboard._diceI = randint(1,6)
         AIboard._diceII = randint(1,6)
-        print("Kostka 1 " + str(AIboard._diceI))
-        print("Kostka 2 " + str(AIboard._diceII))
+      #  print("Kostka 1 " + str(AIboard._diceI))
+        #print("Kostka 2 " + str(AIboard._diceII))
         if AIboard._diceI == AIboard._diceII:
             AIboard._numberOfMoves = 4
             AIboard._botMove._amountOfMoves = 4
@@ -339,27 +340,31 @@ class AIbot(object):
 
         AIboardI = self.Astar(AIboard)
         self._moveI = copy.deepcopy(AIboardI._botMove)
-        print("moveI rusza z " + str(self._moveI._fieldNum) + " z kolorem: " + str(self._moveI._color) + " po kostce:  " + str(self._moveI._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveI._amountOfMoves) + "  dvizheniye po bandzje? " + str(self._moveI._isBandMove))
+      #  print("moveI rusza z " + str(self._moveI._fieldNum) + " z kolorem: " + str(self._moveI._color) + " po kostce:  " + str(self._moveI._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveI._amountOfMoves) + "  dvizheniye po bandzje? " + str(self._moveI._isBandMove))
         self._moveI.makeAImove(startingBoard)
+        self.printData(startingBoard)
 
         AIboard = self.setAIboard(AIboard, startingBoard, color, AIboard._diceI, AIboard._diceII, AIboard._numberOfMoves - 1)
         AIboardII = self.Astar(AIboard)
         self._moveII = copy.deepcopy(AIboardII._botMove)
-        print("moveII rusza z " + str(self._moveII._fieldNum) + " z kolorem: " + str(self._moveII._color) + " po kostce:  " + str(self._moveII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveII._isBandMove))
+       # print("moveII rusza z " + str(self._moveII._fieldNum) + " z kolorem: " + str(self._moveII._color) + " po kostce:  " + str(self._moveII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveII._isBandMove))
         self._moveII.makeAImove(startingBoard)
+        self.printData(startingBoard)
 
         if AIboard._diceI == AIboard._diceII:
             AIboard = self.setAIboard(AIboard, startingBoard, color, AIboard._diceI, AIboard._diceII, AIboard._numberOfMoves - 1)
             AIboardIII = self.Astar(AIboard)
             self._moveIII = copy.deepcopy(AIboardIII._botMove)
-            print("moveIII rusza z " + str(self._moveIII._fieldNum) + " z kolorem: " + str(self._moveIII._color) + " po kostce:  " + str(self._moveIII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIII._isBandMove))
+           # print("moveIII rusza z " + str(self._moveIII._fieldNum) + " z kolorem: " + str(self._moveIII._color) + " po kostce:  " + str(self._moveIII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIII._isBandMove))
             self._moveIII.makeAImove(startingBoard)
+            self.printData(startingBoard)
 
             AIboard = self.setAIboard(AIboard, startingBoard, color, AIboard._diceI, AIboard._diceII, AIboard._numberOfMoves - 1)
             AIboardIV = self.Astar(AIboard)
             self._moveIV = copy.deepcopy(AIboardIV._botMove)
-            print("moveIV rusza z " + str(self._moveIV._fieldNum) + " z kolorem: " + str(self._moveIV._color) + " po kostce:  " + str(self._moveIV._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIV._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIV._isBandMove))
+          #  print("moveIV rusza z " + str(self._moveIV._fieldNum) + " z kolorem: " + str(self._moveIV._color) + " po kostce:  " + str(self._moveIV._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIV._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIV._isBandMove))
             self._moveIV.makeAImove(startingBoard)
+            self.printData(startingBoard)
 
 
     def makeTurnForBot(self, startingBoard, color):
@@ -389,17 +394,16 @@ class AIbot(object):
         #self.setMoves(AIboard._blacksOnBand, AIboard._diceI, AIboard._diceII)
         AIboard._botMove._currNum = AIboard._diceII
         currDepth = 0
-        maxDepth = 2
+        maxDepth = 4
         
         
         typeOfLevel = TraversingLevel.MAX
         previousTypeOfLevel = TraversingLevel.MAX
-        self.greedyTraversing(AIboard, AIboard._numberOfMoves)
-        #self.maxMinChanceEvaluateState(AIboard, currDepth, maxDepth, typeOfLevel, previousTypeOfLevel)
+        #self.greedyTraversing(AIboard, AIboard._numberOfMoves)
+        self.maxMinChanceEvaluateState(AIboard, currDepth, maxDepth, typeOfLevel, previousTypeOfLevel)
        # print("WYSZEDL Z FUNKCJI    ")
        # print("moveI rusza z " + str(self._moveI._fieldNum) + " z kolorem: " + str(self._moveI._color) + " po kostce:  " + str(self._moveI._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveI._amountOfMoves) + "  dvizheniye po bandzje? " + str(self._moveI._isBandMove))
         self._moveI.makeAImove(startingBoard)
-        self._totalNumberOfMoves += 1
         self.printData(startingBoard)
 
         #print("moveII rusza z " + str(self._moveII._fieldNum) + " z kolorem: " + str(self._moveII._color) + " po kostce:  " + str(self._moveII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveII._isBandMove))
@@ -412,11 +416,5 @@ class AIbot(object):
             self.printData(startingBoard)
             #print("moveIII rusza z " + str(self._moveIII._fieldNum) + " z kolorem: " + str(self._moveIII._color) + " po kostce:  " + str(self._moveIII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIII._isBandMove))
             self._moveIV.makeAImove(startingBoard)
-            self._totalNumberOfMoves += 1
             self.printData(startingBoard)
            # print("moveIV rusza z " + str(self._moveIV._fieldNum) + " z kolorem: " + str(self._moveIV._color) + " po kostce:  " + str(self._moveIV._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIV._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIV._isBandMove))
-
-
-
-
-            # TODO : NIE MOZNA TRACIC RUCHU PO WYJSCIU Z BANDY I ZLE WYBRANEJ KOSTCE PRZY 6

@@ -153,12 +153,11 @@ class GameWindow(Frame):
             if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._amountOfMoves != 0 and self.board._redsOnBand == 0:
                 'changing boards state'
                 if self.isMovePossible() == False:
-                    self.AIbot.makeTurnForBot(self.board, Color.BLACK)
+                    self.AIbot.makeTurnForAstar(self.board, Color.BLACK)
                     self.game.isRandomized = False
                     self.displayBoardState(self.board)
                     return 0
                 if self.game.makeTurn(self.board,fieldNum, Color.RED) == True:
-                    self.AIbot._totalNumberOfMoves += 1
                     self.AIbot.printData(self.board)
                     if  self.game._amountOfMoves == 2:
                         if self.game._currNum == self.game._currNumI:
@@ -171,16 +170,15 @@ class GameWindow(Frame):
                         self.game.isRandomized = False            
         self.displayBoardState(self.board)
         
+
     def bandCheckerPressed(self):
-         
          if self.game.isRandomized == True and self.game.isDiceChosen == True and self.game._amountOfMoves != 0:
              if self.game.ableToEscapeBand(Color.RED, self.board) == False:
-                 self.AIbot.makeTurnForBot(self.board, Color.BLACK)
+                 self.AIbot.makeTurnForAstar(self.board, Color.BLACK)
                  self.displayBoardState(self.board)
                  self.game.isRandomized = False
                  return 0
              self.game.removeFromBand(Color.RED, self.board)
-             self.AIbot._totalNumberOfMoves += 1
              self.AIbot.printData(self.board)
              if  self.game._amountOfMoves == 2:
                  if self.game._currNum == self.game._currNumI:
@@ -193,16 +191,25 @@ class GameWindow(Frame):
                 self.game.isRandomized = False
 
              self.displayBoardState(self.board)
+
+
     #function returns if is it possible for player to make any move on board
     def isMovePossible(self):
        # print("wywolano " + str(self.game._currNumI) + " " + str(self.game._currNumII))
         AIboard = AIboardState(AImove(Color.RED, 0, 0, 0, 0, 2), 0, self.board)
-        possibleMovesI = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumI, self.game._currNumI, self.game._currNumII, Color.RED)
-        possibleMovesII = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumII, self.game._currNumI, self.game._currNumII, Color.RED)
-        if not possibleMovesI and not possibleMovesII:
-            return False
+        if self.game._amountOfMoves > 1:
+            possibleMovesI = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumI, self.game._currNumI, self.game._currNumII, Color.RED)
+            possibleMovesII = self.AIbot.boardStatesFromDice(AIboard, self.game._currNumII, self.game._currNumI, self.game._currNumII, Color.RED)
+            if not possibleMovesI and not possibleMovesII:
+                return False
+            else:
+                return True
         else:
-            return True
+            possibleMoves = self.AIbot.boardStatesFromDice(AIboard, self.game._currNum, self.game._currNumI, self.game._currNumII, Color.RED)
+            if not possibleMoves:
+                return False
+            else:
+                return True
             
         
         

@@ -51,7 +51,6 @@ class Game:
     def makeTurn(self, board, fieldNum, currentColor):  # return True means that move has passed
         isNormalValidation = True
         if self.isEverythingAtHome(board, currentColor) == True:
-            print("isEverythingAtHome")
             isNormalValidation = False
 
         if isNormalValidation == True:
@@ -114,10 +113,8 @@ class Game:
                 self.moveToTheCourt(fieldNum, playerColor, board)
                 return True
             elif self.isAnotherFieldsToTheCourt(fieldNum, playerColor, board) == True:
-                print("isAnotherFieldsToTheCourt")
                 return False
             elif self.isAnotherFurther(fieldNum, playerColor, board) == True: 
-                print("isAnotherFurther")
                 return False
             elif destNumber <= 23 and destNumber >= 0:
                 field = board._fields_states[fieldNum]
@@ -141,10 +138,8 @@ class Game:
                     return True
             else:
                 if self.isAnotherFieldsToTheCourt(fieldNum, playerColor, board, False) == True: # szukamy czy inne pole jest rowne ktorejs z 2 kostek
-                    print("isAnotherFieldsToTheCourt_2")
                     return False
                 elif self.isAnotherFurther(fieldNum, playerColor, board) == True:
-                    print("isAnotherFurther_2")
                     return False
                 elif destNumber <= 23 and destNumber >= 0:
                     field = board._fields_states[fieldNum]
@@ -162,7 +157,7 @@ class Game:
             return 24 - fieldNum 
 
     def moveToTheCourt(self, fieldNum, playerColor, board):
-        print("movetoTheCOurt called")
+       # print("movetoTheCOurt called")
         if playerColor == Color.RED:
             board._redsOnTheCourt += 1
         else:
@@ -214,7 +209,7 @@ class Game:
             self.hitEnemy(destField, currField, board)
             return True
         else:
-            print("move checker standard")
+          #  print("move checker standard")
             return False
 
         
@@ -312,10 +307,10 @@ class Game:
             destField = board._fields_states[self._currNum - 1]
 
         if destField.is_empty == True:
-            print("empty")
+           # print("empty")
             self.moveToEmptyFromBand(destField, currColor, board)
         elif destField.color == currColor:
-            print("our")
+           # print("our")
             self.moveToOurFromBand(destField, currColor, board)
         elif destField.number_of_checkers == 1:
             self.hitEnemyFromBand(destField, currColor, board)

@@ -55,8 +55,10 @@ class AIboardState(BoardState):
         index = 0
         #calculating black
 
-        resultBlack += 15 * self._redsOnBand
-        resultRed += 15 * self._blacksOnBand
+        resultBlack += 40 * self._redsOnBand
+        resultRed += 40 * self._blacksOnBand
+        resultRed += 100 * self._redsOnTheCourt
+        resultBlack += 100 *self._blacksOnTheCourt
 
         #punkty za ustawienie pionkow
         for field in self._fields_states:
@@ -83,17 +85,70 @@ class AIboardState(BoardState):
                         resultRed += field._number_of_checkers * (8 - index)
             index += 1
 
-            for i in range(18, 23): # duzo pkt dajemy dla pionkow w domu
-                if field._is_empty == False and field._color == Color.BLACK:
-                    if self._fields_states[i].number_of_checkers > 1:
-                        resultBlack += 50
+        for i in range(18, 23): # duzo pkt dajemy dla pionkow w domu
+            if self._fields_states[i]._is_empty == False and self._fields_states[i]._color == Color.BLACK:
+                if self._fields_states[i].number_of_checkers > 1:
+                    resultBlack += 30 * self._fields_states[i].number_of_checkers
+                    resultBlack += 40
 
-            for i in range(6): # duzo pkt dajemy dla pionkow w domu
-                if field._is_empty == False and field._color == Color.RED:
-                    if self._fields_states[i].number_of_checkers > 1:
-                        resultRed += 50
+        for i in range(6): # duzo pkt dajemy dla pionkow w domu
+            if self._fields_states[i]._is_empty == False and self._fields_states[i]._color == Color.RED:
+                if self._fields_states[i].number_of_checkers > 1:
+                    resultRed += 30 * self._fields_states[i].number_of_checkers
+                    resultRed += 40
 
         return (resultBlack - resultRed)
+
+
+
+
+
+
+        #def calculateHeuristic(self):
+        #resultBlack = 0
+        #resultRed = 0
+        #index = 0
+        ##calculating black
+
+        #resultBlack += 15 * self._redsOnBand
+        #resultRed += 15 * self._blacksOnBand
+
+        ##punkty za ustawienie pionkow
+        #for field in self._fields_states:
+        #    if field._is_empty == False and field._color == Color.BLACK:
+        #        if index < 18:
+        #            resultBlack += index
+        #            if field._number_of_checkers > 1:
+        #                resultBlack += field._number_of_checkers * index
+        #        else:
+        #            resultBlack += (index - 15)
+        #            if field._number_of_checkers > 1:
+        #                resultBlack += field._number_of_checkers * (index - 15)
+        #    index += 1
+        #index = 0
+        #for field in self._fields_states:
+        #    if field._is_empty == False and field._color == Color.RED:
+        #        if index > 5:
+        #            resultRed += (23 - index)
+        #            if field._number_of_checkers > 1:
+        #                resultRed += field._number_of_checkers * (23 - index)
+        #        else:
+        #            resultRed += (8 - index)
+        #            if field._number_of_checkers > 1:
+        #                resultRed += field._number_of_checkers * (8 - index)
+        #    index += 1
+
+        #    for i in range(18, 23): # duzo pkt dajemy dla pionkow w domu
+        #        if field._is_empty == False and field._color == Color.BLACK:
+        #            if self._fields_states[i].number_of_checkers > 1:
+        #                resultBlack += 50
+
+        #    for i in range(6): # duzo pkt dajemy dla pionkow w domu
+        #        if field._is_empty == False and field._color == Color.RED:
+        #            if self._fields_states[i].number_of_checkers > 1:
+        #                resultRed += 50
+
+        #return (resultBlack - resultRed)
 
 
 
