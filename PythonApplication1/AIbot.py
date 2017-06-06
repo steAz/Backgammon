@@ -399,14 +399,13 @@ class AIbot(object):
         
         typeOfLevel = TraversingLevel.MAX
         previousTypeOfLevel = TraversingLevel.MAX
-        #self.greedyTraversing(AIboard, AIboard._numberOfMoves)
         self.maxMinChanceEvaluateState(AIboard, currDepth, maxDepth, typeOfLevel, previousTypeOfLevel)
        # print("WYSZEDL Z FUNKCJI    ")
-       # print("moveI rusza z " + str(self._moveI._fieldNum) + " z kolorem: " + str(self._moveI._color) + " po kostce:  " + str(self._moveI._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveI._amountOfMoves) + "  dvizheniye po bandzje? " + str(self._moveI._isBandMove))
+   
         self._moveI.makeAImove(startingBoard)
         self.printData(startingBoard)
 
-        #print("moveII rusza z " + str(self._moveII._fieldNum) + " z kolorem: " + str(self._moveII._color) + " po kostce:  " + str(self._moveII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveII._isBandMove))
+      
         self._moveII.makeAImove(startingBoard)
         self._totalNumberOfMoves += 1
         self.printData(startingBoard)
@@ -414,7 +413,5 @@ class AIbot(object):
             self._moveIII.makeAImove(startingBoard)
             self._totalNumberOfMoves += 1
             self.printData(startingBoard)
-            #print("moveIII rusza z " + str(self._moveIII._fieldNum) + " z kolorem: " + str(self._moveIII._color) + " po kostce:  " + str(self._moveIII._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIII._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIII._isBandMove))
             self._moveIV.makeAImove(startingBoard)
             self.printData(startingBoard)
-           # print("moveIV rusza z " + str(self._moveIV._fieldNum) + " z kolorem: " + str(self._moveIV._color) + " po kostce:  " + str(self._moveIV._currNum) + " na rasza o pozostalych ruchach:  " + str(self._moveIV._amountOfMoves)+"  dvizheniye po bandzje? " + str(self._moveIV._isBandMove))
